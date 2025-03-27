@@ -1,18 +1,21 @@
 package org.example.model;
 import lombok.*;
 
+import java.util.UUID;
+
 @Setter
 @Getter
 public class User {
     private String name;
     private String email;
     private String password;
-    private int userID;
+    private UUID userID;
 
-    User(String name, String email, String password) {
+    public User() {}
+    public User(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.userID = (int) Math.random();
+        this.userID = UUID.randomUUID();
     }
 }
