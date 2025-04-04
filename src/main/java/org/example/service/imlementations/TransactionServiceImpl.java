@@ -1,11 +1,13 @@
 package org.example.service.imlementations;
 
+import lombok.RequiredArgsConstructor;
 import org.example.dto.TransactionRequestDTO;
 import org.example.dto.TransactionResponseDTO;
 import org.example.mappers.TransactionMapper;
 import org.example.mappers.UserMapper;
 import org.example.model.Transaction;
 import org.example.repositories.implementations.TransactionRepositoryImpl;
+import org.example.repositories.interfaces.TransactionRepository;
 import org.example.service.interfaces.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+@RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
-    TransactionRepositoryImpl transactionRepository;
-    TransactionMapper transactionMapper = new TransactionMapper();
+    private final TransactionRepository transactionRepository;
+    private final TransactionMapper transactionMapper = new TransactionMapper();
 
-    Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
 
     @Override
     public TransactionResponseDTO addTransaction(TransactionRequestDTO transactionRequestDTO) {

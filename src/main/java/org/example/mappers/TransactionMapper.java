@@ -28,4 +28,9 @@ public class TransactionMapper {
         tr.setType(dto.getType());
         return tr;
     }
+    public String toString(TransactionResponseDTO dto) {
+        return "ID: " + dto.getTransactionID() + ", Category: " + dto.getCategory() + ", Type: " + dto.getType()
+              + "\n"  + ", Amount: " + dto.getAmount() + ", Date: " + dto.getDate() + "\n"
+                + ", Description: " + dto.getDescription();
+    }
 }

@@ -18,6 +18,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User addUser(User user) {
         logger.debug("попытка добавить пользователя");
+        if (user.getUserID() == null) {
+            user.setUserID(UUID.randomUUID());
+        }
         users.add(user);
         logger.info("пользователь {}  добавлен", user.getName());
         return user;
@@ -56,14 +59,16 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Optional<User> getUserByID(UUID id) {
         logger.debug("попытка получения пользователя по ID");
-        for (User user : users) {
-            if(user.getUserID().equals(id)){
-                logger.info("пользователь {} найден", user.getName());
-                return Optional.of(user);
-            }
-        }
-        logger.info("пользователь с id: {} не найден", id);
-        return Optional.empty();
+        return users.stream()
+                .filter(user -> user.getUserID().equals(id)).findFirst();
+    }
+
+    @Override
+    public Optional<User> getUserByEmail(String email) {
+        return users.stream()
+                .filter(u -> u.getEmail().equals(email))
+                .findFirst();
+
     }
 
     @Override

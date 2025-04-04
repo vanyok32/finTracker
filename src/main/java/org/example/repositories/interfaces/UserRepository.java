@@ -12,5 +12,6 @@ public interface UserRepository {
     public Optional<User> updateUser(User user, UUID id);
     public boolean removeUser(UUID id);
     public Optional<User> getUserByID(UUID id);
+    public Optional<User> getUserByEmail(String email);
     public List<User> getUsers();
 }

@@ -1,4 +1,4 @@
-package org.example.model.enums;
+package org.example.enums;
 
 public enum FilterBy {
     TYPE,

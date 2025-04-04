@@ -2,9 +2,11 @@ package org.example.service.imlementations;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.UserRequestDTO;
 import org.example.dto.UserResponseDTO;
+import org.example.exeptions.UserNotFoundException;
 import org.example.mappers.UserMapper;
 import org.example.model.User;
 import org.example.repositories.implementations.UserRepositoryImpl;
+import org.example.repositories.interfaces.UserRepository;
 import org.example.service.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +18,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 
 public class UserServiceImpl implements UserService {
-    private final UserRepositoryImpl userRepository;
+    private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
 
     @Override
     public UserResponseDTO registerUser(UserRequestDTO userRequestDTO) {
@@ -48,5 +50,20 @@ public class UserServiceImpl implements UserService {
         user.setUserID(id);
         userRepository.updateUser(user, id);
         return userMapper.toResponseDTO(user);
+    }
+
+    @Override
+    public boolean hasUser(String email) {
+        return userRepository.getUserByEmail(email).isPresent();
+    }
+
+    @Override
+    public User getUserByEmail(String email) {
+        return userRepository.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+    }
+
+    @Override
+    public User getUserById(UUID id) {
+        return userRepository.getUserByID(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
     }
 }

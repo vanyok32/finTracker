@@ -1,6 +1,7 @@
 package org.example.model;
 import lombok.*;
-import org.example.model.enums.*;
+import org.example.enums.TransactionCategory;
+import org.example.enums.TransactionType;
 
 
 import java.time.LocalDateTime;
@@ -18,7 +19,7 @@ public class Transaction {
     private UUID UserID; //id владельца транзакции
     private UUID TransactionID; //уникальное значение транзакции
 
-    final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public Transaction(TransactionType type, TransactionCategory category,
                         String description, Double amount, UUID UserId) {
