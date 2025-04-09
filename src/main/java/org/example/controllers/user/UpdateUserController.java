@@ -1,6 +1,8 @@
 package org.example.controllers.user;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.example.controllers.ChoosingActionController;
 import org.example.dto.UserRequestDTO;
 import org.example.entrypoint.UserIdOwner;
 import org.example.in.Reader;
@@ -15,11 +17,12 @@ import org.slf4j.LoggerFactory;
 
 public class UpdateUserController {
     private final UserService userService;
-    private final Reader reader = new Reader();
-    private final UpdateUserWriter writer = new UpdateUserWriter();
-    private final UserInfoPrinter printer = new UserInfoPrinter(userService);
+    private final Reader reader;
+    private final UpdateUserWriter writer;
+    private final UserInfoPrinter printer;
     private final Logger logger = LoggerFactory.getLogger(UpdateUserController.class);
-
+    @Setter
+    private ChoosingActionController choosingActionController;
     public void update(){
         printer.print(UserIdOwner.getInstance().getUserID());
         writer.askName();
@@ -38,5 +41,6 @@ public class UpdateUserController {
         logger.info("Пользователь успешно обновил данные {}, {},{}", newName, newEmail, newPassword);
         UserRequestDTO dto  = new UserRequestDTO(newName, newEmail, newPassword);
         userService.updateUser(UserIdOwner.getInstance().getUserID(), dto);
+        choosingActionController.start();
     }
 }

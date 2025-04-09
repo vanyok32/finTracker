@@ -1,6 +1,8 @@
 package org.example.entrypoint;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.example.controllers.ChoosingActionController;
 import org.example.in.Reader;
 import org.example.mappers.UserMapper;
 import org.example.out.AuthentificationWriter;
@@ -15,23 +17,26 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 
 public class Authentication{
-    private final AuthentificationWriter writer = new AuthentificationWriter();
-    private final Reader reader = new Reader();
+    private final AuthentificationWriter writer;
+    private final Reader reader;
     private final UserService service;
     private final Logger logger = LoggerFactory.getLogger(Authentication.class);
+    @Setter
+    private ChoosingActionController choosingActionController;
 
 
     public void login(String email){
         logger.info("Пользователь пытается войти в аккаунт");
         writer.askPassword();
         String password = reader.read();
-        if (password.equals(service.getUserByEmail(email).getPassword())){
+        if (password.equals(service.getUserPassword(email))){
             logger.info("Пользователь успешно вошел в аккаунт");
-            UserIdOwner.getInstance().setUserID(service.getUserByEmail(email).getUserID());
+            UserIdOwner.getInstance().setUserID(service.getUserByEmail(email).getId());
             writer.sucsessLogin();
             /**
              * меню команд
              */
+            choosingActionController.start();
         }
         else {
             logger.info("Ошибка входа в аккаунт, попытка заново");

@@ -12,7 +12,8 @@ public interface UserService {
     public void deleteUser(UUID id);
     public UserResponseDTO updateUser(UUID id, UserRequestDTO userRequestDTO);
     public boolean hasUser(String email);
-    User getUserByEmail(String email);
-    User getUserById(UUID id);
+    UserResponseDTO getUserByEmail(String email);
+    UserResponseDTO getUserById(UUID id);
+    String getUserPassword(String email);
 
 }

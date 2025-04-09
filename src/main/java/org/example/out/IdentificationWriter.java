@@ -3,11 +3,8 @@ package org.example.out;
 public class IdentificationWriter {
     public void writeGreeting(){
         System.out.println("""
-                
                 Добро пожаловать, это Ваш личный финансовый трекер.
-                     Для дальнейших действий введите ваш email
-            
-                """);
+                     Для дальнейших действий введите ваш email""");
     }
     public void invalidEmail(){
         System.out.println("Вы ввели неправильный email, попробуйте еще раз!");

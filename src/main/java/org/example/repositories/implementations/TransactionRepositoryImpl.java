@@ -1,5 +1,6 @@
 package org.example.repositories.implementations;
 
+import org.example.entrypoint.UserIdOwner;
 import org.example.model.Transaction;
 import org.example.repositories.interfaces.TransactionRepository;
 import org.slf4j.Logger;
@@ -11,12 +12,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class TransactionRepositoryImpl implements TransactionRepository {
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
     private Logger logger = LoggerFactory.getLogger(TransactionRepositoryImpl.class);
 
     @Override
     public Transaction addTransaction(Transaction transaction){
         logger.debug("попытка добавления транзакции");
+        transaction.setUserID(UserIdOwner.getInstance().getUserID());
+        transaction.setTransactionID(UUID.randomUUID());
         transactions.add(transaction);
         logger.info("транзакция добавлена, id: {}", transaction.getTransactionID());
         return transaction;

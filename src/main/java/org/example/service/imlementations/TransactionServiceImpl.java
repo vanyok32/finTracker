@@ -19,7 +19,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
     private final TransactionRepository transactionRepository;
-    private final TransactionMapper transactionMapper = new TransactionMapper();
+    private final TransactionMapper transactionMapper;
 
     private final Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
 

@@ -58,12 +58,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userRepository.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+    public UserResponseDTO getUserByEmail(String email) {
+        return userMapper.toResponseDTO(userRepository.getUserByEmail(email).orElseThrow(()
+                -> new UserNotFoundException(email)));
     }
 
     @Override
-    public User getUserById(UUID id) {
-        return userRepository.getUserByID(id).orElseThrow(() -> new UserNotFoundException(id.toString()));
+    public UserResponseDTO getUserById(UUID id) {
+        return userMapper.toResponseDTO(userRepository.getUserByID(id).orElseThrow(()
+                -> new UserNotFoundException(id.toString())));
+    }
+
+    @Override
+    public String getUserPassword(String email) {
+        User user = userRepository.getUserByEmail(email).get();
+        return user.getPassword();
     }
 }

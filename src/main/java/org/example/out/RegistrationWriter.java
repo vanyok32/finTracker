@@ -13,8 +13,7 @@ public class RegistrationWriter {
     public void invalidPassword(){
         System.out.println("""
                 Даже не знаю, дядя Корней, сегодня вообще загадочный день" +
-                    то пароли не совпадают, то имя еще раз вводить
-                """);
+                    то пароли не совпадают, то имя еще раз вводить""");
     }
     public void invalidValidatePassword(){
         System.out.println("Пароль содержит запрещенные символы");

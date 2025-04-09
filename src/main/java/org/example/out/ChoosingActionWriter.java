@@ -6,8 +6,7 @@ public class ChoosingActionWriter {
                  Выберите действие: 
                 update/delete/get user
                 add/update/delete/get transaction
-                Для выхода введите exit
-                """);
+                Для выхода введите exit""");
     }
     public void invalidInput(){
         System.out.println("Введены неверные данные");

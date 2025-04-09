@@ -2,6 +2,7 @@ package org.example.repositories.implementations;
 import org.example.model.User;
 import org.example.repositories.interfaces.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 
 public class UserRepositoryImpl implements UserRepository {
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
 
     private static final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
 
@@ -22,7 +23,7 @@ public class UserRepositoryImpl implements UserRepository {
             user.setUserID(UUID.randomUUID());
         }
         users.add(user);
-        logger.info("пользователь {}  добавлен", user.getName());
+        logger.info("пользователь {}  добавлен, id: {}", user.getName(), user.getUserID());
         return user;
     }
 

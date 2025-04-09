@@ -13,18 +13,13 @@ import org.slf4j.LoggerFactory;
 @RequiredArgsConstructor
 public class Identification {
     private final UserService userService;
-    private final Reader reader = new Reader();
-    private final Authentication authentication;//= new Authentication(userService);
-    private final Registrations registrations;// = new Registrations(userService);
+    private final Reader reader;
+    private final Authentication authentication;
+    private final Registrations registrations;
     private final Logger logger = LoggerFactory.getLogger(Identification.class);
-    private final IdentificationWriter writer = new IdentificationWriter();
-    private final UserValidator validator = new UserValidator();
+    private final IdentificationWriter writer;
+    private final UserValidator validator;
 
-    public Identification(UserService userService){
-        this.userService = userService;
-        this.authentication = new Authentication(userService);
-        this.registrations = new Registrations(userService);
-    }
     public void start(){
         writer.writeGreeting();
         String email = reader.read();
@@ -54,6 +49,7 @@ public class Identification {
             logger.info("направляем на регистрацию");
             writer.goToRegistration();
             registrations.registrate(email);
+
         }
     }
 }
