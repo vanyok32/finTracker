@@ -1,5 +1,6 @@
 package org.example.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.enums.TransactionCategory;
@@ -10,6 +11,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class TransactionResponseDTO {
     private double amount;
     private TransactionCategory category;
@@ -23,5 +25,7 @@ public class TransactionResponseDTO {
         return this.type.getName() + this.getAmount() + ", категория: " + this.getCategory() + ", Дата: " + this.getDate()+"\n"
                  + "Описание: "+this.getDescription() + "\n TransactionID=" + this.getTransactionID();
     }
+    public TransactionResponseDTO() {}
+
 }
 

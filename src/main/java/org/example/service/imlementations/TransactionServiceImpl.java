@@ -33,9 +33,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void deleteTransaction(UUID id) {
+    public boolean deleteTransaction(UUID id) {
         logger.debug("Удаление в TrService");
-        transactionRepository.deleteTransaction(id);
+        return transactionRepository.deleteTransaction(id);
     }
 
     @Override

@@ -22,8 +22,8 @@ public class Transaction {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    public Transaction(TransactionType type, TransactionCategory category,
-                        String description, Double amount) {
+    public Transaction(TransactionType type, Double amount, TransactionCategory category,
+                        String description) {
 
         this.type = type;
         this.category = category;

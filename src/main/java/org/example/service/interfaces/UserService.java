@@ -7,11 +7,11 @@ import org.example.model.User;
 import java.util.UUID;
 
 public interface UserService {
-    public UserResponseDTO registerUser(UserRequestDTO userRequestDTO);
-    public boolean loginUser(UserRequestDTO userRequestDTO);
-    public void deleteUser(UUID id);
-    public UserResponseDTO updateUser(UUID id, UserRequestDTO userRequestDTO);
-    public boolean hasUser(String email);
+    UserResponseDTO registerUser(UserRequestDTO userRequestDTO);
+    boolean loginUser(UserRequestDTO userRequestDTO);
+    boolean deleteUser(UUID id);
+    UserResponseDTO updateUser(UUID id, UserRequestDTO userRequestDTO);
+    boolean hasUser(String email);
     UserResponseDTO getUserByEmail(String email);
     UserResponseDTO getUserById(UUID id);
     String getUserPassword(String email);

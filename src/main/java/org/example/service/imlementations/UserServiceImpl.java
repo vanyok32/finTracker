@@ -39,9 +39,9 @@ public class UserServiceImpl implements UserService {
         return false;
     }
     @Override
-    public void deleteUser(UUID id) {
+    public boolean deleteUser(UUID id) {
         logger.debug("удаление в UserService");
-        userRepository.removeUser(id);
+        return userRepository.removeUser(id);
     }
     @Override
     public UserResponseDTO updateUser(UUID id, UserRequestDTO userRequestDTO) {

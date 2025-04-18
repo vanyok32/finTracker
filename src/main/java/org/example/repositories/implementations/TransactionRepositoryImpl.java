@@ -28,7 +28,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     @Override
     public List<Transaction> getTransactionsByUserID (UUID UserID){
         logger.debug("попытка получения транзакции по userID");
-        List<Transaction> transactionsForReturn = new ArrayList<Transaction>();
+        List<Transaction> transactionsForReturn = new ArrayList<>();
         for(Transaction transaction : transactions){
             if(transaction.getUserID().equals(UserID)){
                 transactionsForReturn.add(transaction);

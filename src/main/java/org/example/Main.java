@@ -91,18 +91,8 @@ public class Main {
         deleteUserController.setChoosingActionController(choosingActionController);
         updateUserController.setChoosingActionController(choosingActionController);
         getTransactionController.setActionController(choosingActionController);
-
+        getUserController.setChoosingActionController(choosingActionController);
         identification.start();
 
     }
-    /**
-     *Дописать об успешном выполнении в контроллерах
-     *логирование просмотреть
-     * проверить на вылет команду exit
-     *
-     *
-     */
-
-
-
 }

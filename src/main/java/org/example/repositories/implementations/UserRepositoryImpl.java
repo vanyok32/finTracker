@@ -35,7 +35,7 @@ public class UserRepositoryImpl implements UserRepository {
                 u.setName(user.getName());
                 u.setEmail(user.getEmail());
                 u.setPassword(user.getPassword());
-                logger.info("пользователь {} обновлен", user.getName());
+                logger.info("пользователь c id: {} обновлен", user.getUserID());
                 return Optional.of(u);
             }
         }
