@@ -1,5 +1,8 @@
 package org.example.entrypoint;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.UUID;
 
 /**
@@ -9,6 +12,8 @@ import java.util.UUID;
  *
  */
 
+@Setter
+@Getter
 public class UserIdOwner {
     private static UserIdOwner instance;
     private UUID userID;
@@ -21,10 +26,5 @@ public class UserIdOwner {
         }
         return instance;
     }
-    public UUID getUserID() {
-        return userID;
-    }
-    public void setUserID(UUID userID) {
-        this.userID = userID;
-    }
+
 }

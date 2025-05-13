@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.commands.CommandsEnum;
 import org.example.commands.ModelEnum;
 import org.example.commands.Parser;
+import org.example.controllers.administration.BlockUserController;
+import org.example.controllers.administration.UnblockUserController;
 import org.example.controllers.transactions.AddTransactionController;
 import org.example.controllers.transactions.DeleteTransactionController;
 import org.example.controllers.transactions.GetTransactionController;
@@ -12,8 +14,13 @@ import org.example.controllers.user.DeleteUserController;
 import org.example.controllers.user.GetUserController;
 import org.example.controllers.user.UpdateUserController;
 import org.example.entrypoint.Identification;
+import org.example.entrypoint.UserIdOwner;
+import org.example.entrypoint.UserRoleOwner;
+import org.example.enums.UserRole;
 import org.example.in.Reader;
+import org.example.out.AdministrationWriter;
 import org.example.out.ChoosingActionWriter;
+import org.example.service.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +39,9 @@ public class ChoosingActionController {
     private final UpdateUserController updateUserController;
     private final GetTransactionController getTransactionController;
     private final GetUserController getUserController;
+    private final BlockUserController blockUserController;
+    private final UnblockUserController unblockUserController;
+    private final AdministrationWriter adminWriter;
 
     public void chooseAction(CommandsEnum command, ModelEnum model) {
         if (command == CommandsEnum.EXIT) {
@@ -84,15 +94,26 @@ public class ChoosingActionController {
                    getUserController.get();
                     break;
                 }
-                /**
-                 * get user
-                 */
-
+            case BLOCK:
+                if (model == ModelEnum.TRANSACTION || UserRoleOwner.getInstance().getRole() == UserRole.USER){
+                    writer.invalidInput();
+                    start();
+                    return;
+                }
+                blockUserController.blockUser();
+            case UNBLOCK:
+                if (model == ModelEnum.TRANSACTION || UserRoleOwner.getInstance().getRole() == UserRole.USER){
+                    writer.invalidInput();
+                    start();
+                    return;
+                }
+                unblockUserController.unBlockUser();
         }
 
     }
     public void start(){
         writer.actions();
+        if (UserRoleOwner.getInstance().getRole() == UserRole.ADMIN) adminWriter.adminActions();
         String answer = reader.read();
         try {
             chooseAction(parser.parseCommand(answer), parser.parseModel(answer));

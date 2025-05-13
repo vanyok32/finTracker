@@ -16,6 +16,8 @@ public class TransactionListPrinter {
     public void print(UUID userID) {
         List<TransactionResponseDTO> trList = transactionService.getTransactionsByUserId(userID);
         writer.showTransactions();
-        System.out.println(trList.stream().map(TransactionResponseDTO::toString));
+        for (TransactionResponseDTO tr : trList) {
+            System.out.println(tr.toString());
+        }
     }
 }

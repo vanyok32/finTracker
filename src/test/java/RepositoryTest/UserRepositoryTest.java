@@ -2,6 +2,7 @@ package RepositoryTest;
 
 
 import org.example.model.User;
+import org.example.repositories.implementations.TransactionRepositoryImpl;
 import org.example.repositories.implementations.UserRepositoryImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +19,7 @@ class UserRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        repository = new UserRepositoryImpl();
+        repository = UserRepositoryImpl.getInstance();
         user = new User("Беженарь Тимур Кафкович", "ilovegym@mail.ru", "kafka", UUID.randomUUID());
         user2 = new User("Хибернейтов Семен", "lox@xyi.com", "rocket_league123", UUID.randomUUID());
 
@@ -36,12 +37,11 @@ class UserRepositoryTest {
     @DisplayName("успешное|ошибочное обновление пользователя")
     void updateUser_returnOptional(){
         repository.addUser(user);
-        Optional<User> updated_user1 = repository.updateUser(user2, user.getUserID());
-        Optional<User> updated_user2 = repository.updateUser(user2, UUID.randomUUID());
-        Assertions.assertTrue(updated_user2.isEmpty());
-        Assertions.assertTrue(updated_user1.isPresent());
-        Assertions.assertEquals(user.getUserID(), updated_user1.get().getUserID());
-        Assertions.assertEquals(user2.getName(), updated_user1.get().getName());
+        boolean updated_user1 = repository.updateUser(user2, user.getUserID());
+        boolean updated_user2 = repository.updateUser(user2, UUID.randomUUID());
+        Assertions.assertTrue(updated_user1);
+        Assertions.assertFalse(updated_user2);
+
     }
     @Test
     @DisplayName("успешное/ошибочное удаление пользователя")

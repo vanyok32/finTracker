@@ -88,7 +88,7 @@ class TransactionServiceTest {
     void updateTransaction_ValidTransaction_updatesTransaction() {
         //arrange
         when(transactionRepository.updateTransaction(transaction, transaction.getTransactionID()))
-                .thenReturn(Optional.of(transaction));
+                .thenReturn(true);
         when(transactionMapper.toResponseDTO(transaction)).thenReturn(transactionResponseDTO);
         when(transactionMapper.toTransaction(transactionRequestDTO)).thenReturn(transaction);
         //act

@@ -5,8 +5,7 @@ public class AddTransactionWriter {
         System.out.println("""
                 Вы попали в режим добавления транзакции
                 Для начала введите сумму транзакции в формате
-                +/- ваша_сумма
-                """);
+                +/- ваша_сумма""");
     }
     public void askCategory(){
         System.out.println("""

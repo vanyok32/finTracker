@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.example.controllers.ChoosingActionController;
 import org.example.dto.UserRequestDTO;
+import org.example.enums.UserRole;
 import org.example.in.Reader;
 import org.example.mappers.UserMapper;
 import org.example.out.RegistrationWriter;
@@ -54,6 +55,7 @@ public class Registrations {
         logger.info("пользователь прошел регистрацию, заносится в репозиторий");
         service.registerUser(user);
         UserIdOwner.getInstance().setUserID(service.getUserByEmail(email).getId());
+        UserRoleOwner.getInstance().setRole(UserRole.USER);
         choosingActionController.start();
 
 

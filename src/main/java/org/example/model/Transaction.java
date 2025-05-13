@@ -11,6 +11,7 @@ import java.util.UUID;
 
 @Setter
 @Getter
+@AllArgsConstructor
 public class Transaction {
     private TransactionType type; //тип транзакции (доход/расход)
     private TransactionCategory category; //категория транзакции
@@ -24,13 +25,11 @@ public class Transaction {
 
     public Transaction(TransactionType type, Double amount, TransactionCategory category,
                         String description) {
-
         this.type = type;
         this.category = category;
         this.date = LocalDateTime.now();
         this.description = description;
         this.amount = amount;
-
     }
     public Transaction() {}
 }

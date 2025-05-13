@@ -27,7 +27,7 @@ public class AmountCategoryTypeParser {
         return null;
     }
     public int parseAmount(String input){
-        return Integer.parseInt(input.substring(2));
+        return Integer.parseInt(input.substring(1));
     }
     public Optional<TransactionCategory> checkCategory(){
         writer.askCategory();

@@ -32,10 +32,8 @@ public class Authentication{
         if (password.equals(service.getUserPassword(email))){
             logger.info("Пользователь успешно вошел в аккаунт");
             UserIdOwner.getInstance().setUserID(service.getUserByEmail(email).getId());
+            UserRoleOwner.getInstance().setRole(service.getUserRole(email));
             writer.sucsessLogin();
-            /**
-             * меню команд
-             */
             choosingActionController.start();
         }
         else {

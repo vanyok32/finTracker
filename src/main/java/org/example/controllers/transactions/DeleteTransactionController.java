@@ -25,8 +25,10 @@ public class DeleteTransactionController {
 
     public void delete(){
         logger.info("Процесс удаления транзакции");
-        UUID trId = UUID.fromString(reader.read());
         printer.print(UserIdOwner.getInstance().getUserID());
+        String input = reader.read();
+        if (input.equals("exit")){choosingActionController.start(); return;}
+        UUID trId = UUID.fromString(input);
         if (transactionService.getTransactionByID(trId) == null) {
             writer.invalidInput();
             logger.info("Неверное ID для удаления: {}", trId);

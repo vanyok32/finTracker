@@ -1,6 +1,8 @@
 package org.example.entrypoint;
 
 import lombok.RequiredArgsConstructor;
+import org.example.enums.UserRole;
+import org.example.enums.UserStatus;
 import org.example.in.Reader;
 
 import org.example.out.IdentificationWriter;
@@ -37,9 +39,11 @@ public class Identification {
     public void identificate(String email){
         logger.info("пользователь идентифицируется");
         if (userService.hasUser(email)) {
-            /**
-             * if User blocked на будущее
-                */
+            if (userService.getUserStatus(email) == UserStatus.BLOCKED){
+                writer.userBlocked();
+                start();
+                return;
+            }
             logger.info("такой пользователь есть, направляем на аутентификацию");
             writer.goToAuthentication();
             authentication.login(email);

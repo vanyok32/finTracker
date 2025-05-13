@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +25,7 @@ class TransactionRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        repository = new TransactionRepositoryImpl();
+        repository =TransactionRepositoryImpl.getInstance();
         transaction1 = new Transaction(TransactionType.MINUS, 2222.00, TransactionCategory.CASH,
                 "дал бройлеру на ростмасер");
         transaction2 = new Transaction(TransactionType.PLUS, 5000.55, TransactionCategory.PEOPLE,
@@ -76,11 +77,10 @@ class TransactionRepositoryTest {
     @DisplayName("обновление транзакции")
     void updateTransaction_returnOptional() {
         repository.addTransaction(transaction1);
-        Optional<Transaction> updated_tr = repository.updateTransaction(transaction2, transaction1.getTransactionID());
-        Optional<Transaction> empty_tr = repository.updateTransaction(transaction2, UUID.randomUUID());
-        Assertions.assertTrue(empty_tr.isEmpty());
-        Assertions.assertTrue(updated_tr.isPresent());
-        Assertions.assertEquals(updated_tr.get().getTransactionID(),transaction1.getTransactionID());
-        Assertions.assertEquals(updated_tr.get().getCategory(),transaction2.getCategory());
+        boolean updated_tr = repository.updateTransaction(transaction2, transaction1.getTransactionID());
+        boolean empty_tr = repository.updateTransaction(transaction2, UUID.randomUUID());
+        Assertions.assertTrue(updated_tr);
+        Assertions.assertFalse(empty_tr);
+        Mockito.verify(repository, Mockito.times(2)).addTransaction(transaction1);
     }
 }

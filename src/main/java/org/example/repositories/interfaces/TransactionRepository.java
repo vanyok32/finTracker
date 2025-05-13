@@ -12,5 +12,5 @@ public interface TransactionRepository {
     public boolean deleteTransaction(UUID id);
     public Optional<Transaction> getTransactionByTransactionID(UUID id);
     public List<Transaction> getTransactionsByUserID(UUID userID);
-    public Optional<Transaction> updateTransaction(Transaction transaction, UUID id);
+    public boolean updateTransaction(Transaction transaction, UUID id);
 }

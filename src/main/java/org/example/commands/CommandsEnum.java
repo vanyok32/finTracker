@@ -5,5 +5,7 @@ public enum CommandsEnum {
     DELETE,
     ADD,
     GET,
-    EXIT;
+    EXIT,
+    BLOCK,
+    UNBLOCK;
 }

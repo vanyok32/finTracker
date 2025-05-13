@@ -15,4 +15,7 @@ public class IdentificationWriter {
     public void goToRegistration(){
         System.out.println("Пользователя с таким email не существует, направляем на регистрацию!");
     }
+    public void userBlocked(){
+        System.out.println("Эта учетная запись заблокирована");
+    }
 }

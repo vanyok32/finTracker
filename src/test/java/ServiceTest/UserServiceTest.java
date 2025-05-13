@@ -90,7 +90,7 @@ class UserServiceTest {
     @DisplayName("Успешное обновление пользователя")
     void updateUser_ValidUser_ReturnUserDTO() {
         //arrange
-        when(userRepository.updateUser(user, user.getUserID())).thenReturn(Optional.of(user));
+        when(userRepository.updateUser(user, user.getUserID())).thenReturn(true);
         when(userMapper.toUser(userRequestDTO)).thenReturn(user);
         when(userMapper.toResponseDTO(user)).thenReturn(userResponseDTO);
         //act

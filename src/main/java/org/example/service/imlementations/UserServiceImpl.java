@@ -2,6 +2,8 @@ package org.example.service.imlementations;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.UserRequestDTO;
 import org.example.dto.UserResponseDTO;
+import org.example.enums.UserRole;
+import org.example.enums.UserStatus;
 import org.example.exeptions.UserNotFoundException;
 import org.example.mappers.UserMapper;
 import org.example.model.User;
@@ -73,5 +75,24 @@ public class UserServiceImpl implements UserService {
     public String getUserPassword(String email) {
         User user = userRepository.getUserByEmail(email).get();
         return user.getPassword();
+    }
+    @Override
+    public boolean blockUser(String email) {
+        return userRepository.blockUser(email);
+    }
+
+    @Override
+    public boolean unblockUser(String email) {
+        return userRepository.unBlockUser(email);
+    }
+
+    @Override
+    public UserStatus getUserStatus(String email) {
+        return userRepository.getUserStatus(email);
+    }
+
+    @Override
+    public UserRole getUserRole(String email) {
+        return userRepository.getUserRole(email);
     }
 }

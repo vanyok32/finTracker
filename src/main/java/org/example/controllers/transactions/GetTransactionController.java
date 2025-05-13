@@ -29,17 +29,22 @@ public class GetTransactionController {
             System.out.println(transactionService.getTransactionsByUserId(UserIdOwner.getInstance().getUserID()));
             actionController.start();
         }
+        else if (answer.equalsIgnoreCase("exit")) {
+            actionController.start();
+            return;
+        }
         else{
             try{
-                transactionService.getTransactionByID(UUID.fromString(answer));
+
+                logger.info("Выводится информация о транзакции с id {}", answer);
+                System.out.println(transactionService.getTransactionByID(UUID.fromString(answer)).toString());
+                actionController.start();
             }catch (NullPointerException | IllegalArgumentException e){
                 writer.transactionNotFound();
                 get();
                 return;
             }
-            logger.info("Выводится информация о транзакции с id {}", answer);
-            System.out.println(transactionService.getTransactionByID(UUID.fromString(answer)).toString());
-            actionController.start();
+
         }
     }
 
