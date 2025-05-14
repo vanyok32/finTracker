@@ -1,5 +1,8 @@
 package org.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.example.api.TransactionServlet;
+import org.example.api.UserServlet;
 import org.example.commands.AmountCategoryTypeParser;
 import org.example.commands.Parser;
 import org.example.controllers.ChoosingActionController;
@@ -98,7 +101,9 @@ public class Main {
         getUserController.setChoosingActionController(choosingActionController);
         blockUserController.setChoosingActionController(choosingActionController);
         unblockUserController.setChoosingActionController(choosingActionController);
-        identification.start();
+        //identification.start();
+
+
 
     }
 }

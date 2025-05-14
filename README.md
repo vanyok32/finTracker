@@ -6,7 +6,7 @@
 ### 🧠 Command Line Interface (пока что 🤥)
 
 ### 🚀 Технологии
-- Java 24
+- Java 23
 - Maven
 - Junit 5
 - Mockito
