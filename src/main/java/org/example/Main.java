@@ -1,8 +1,5 @@
 package org.example;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.example.api.TransactionServlet;
-import org.example.api.UserServlet;
 import org.example.commands.AmountCategoryTypeParser;
 import org.example.commands.Parser;
 import org.example.controllers.ChoosingActionController;
@@ -21,14 +18,11 @@ import org.example.entrypoint.Registrations;
 import org.example.in.Reader;
 import org.example.mappers.TransactionMapper;
 import org.example.mappers.UserMapper;
-import org.example.model.Transaction;
 import org.example.out.*;
 import org.example.repositories.implementations.TransactionRepositoryImpl;
 import org.example.repositories.implementations.UserRepositoryImpl;
-import org.example.repositories.interfaces.TransactionRepository;
-import org.example.repositories.interfaces.UserRepository;
-import org.example.service.imlementations.TransactionServiceImpl;
-import org.example.service.imlementations.UserServiceImpl;
+import org.example.service.implementations.TransactionServiceImpl;
+import org.example.service.implementations.UserServiceImpl;
 import org.example.service.interfaces.TransactionService;
 import org.example.service.interfaces.UserService;
 import org.example.validators.UserValidator;
@@ -40,14 +34,11 @@ import org.slf4j.LoggerFactory;
 public class Main {
     private final Logger logger = LoggerFactory.getLogger(Main.class);
     public static void main(String[] args) {
-        //mappers
-        UserMapper userMapper = new UserMapper();
-        TransactionMapper transactionMapper = new TransactionMapper();
         //reader, parser
         Reader reader = new Reader();
         Parser parser = new Parser();
         //validator
-        UserValidator userValidator = new UserValidator();
+        UserValidator userValidator = UserValidator.getInstance();
         //writers
         AuthentificationWriter authentificationWriter = new AuthentificationWriter();
         RegistrationWriter registrationWriter = new RegistrationWriter();
@@ -62,14 +53,14 @@ public class Main {
         //amountCategoryTypeParser
         AmountCategoryTypeParser amountCategoryTypeParser = new AmountCategoryTypeParser(addTransactionWriter, reader);
         //services
-        UserService UserService = new UserServiceImpl(UserRepositoryImpl.getInstance(), userMapper);
-        TransactionService TransactionService = new TransactionServiceImpl(TransactionRepositoryImpl.getInstance(), transactionMapper);
+        UserService UserService = UserServiceImpl.getInstance();
+        TransactionService TransactionService = TransactionServiceImpl.getInstance();
         //Transaction and User information printers
         TransactionListPrinter transactionListPrinter = new TransactionListPrinter(TransactionService, updateTransactionWriter);
         UserInfoPrinter userInfoPrinter = new UserInfoPrinter(UserService);
         //entrypoint
         Authentication authentication = new Authentication(authentificationWriter,reader, UserService);
-        Registrations registrations = new Registrations(registrationWriter,reader,UserService,userValidator,userMapper);
+        Registrations registrations = new Registrations(registrationWriter,reader,UserService,userValidator, UserMapper.getInstance());
         Identification identification = new Identification(UserService,reader, authentication,
                 registrations, identificationWriter, userValidator);
         //controllers
@@ -101,7 +92,7 @@ public class Main {
         getUserController.setChoosingActionController(choosingActionController);
         blockUserController.setChoosingActionController(choosingActionController);
         unblockUserController.setChoosingActionController(choosingActionController);
-        //identification.start();
+        identification.start();
 
 
 

@@ -2,11 +2,11 @@ package ServiceTest;
 
 import org.example.dto.UserRequestDTO;
 import org.example.dto.UserResponseDTO;
-import org.example.exeptions.UserNotFoundException;
+import org.example.exceptions.UserNotFoundException;
 import org.example.mappers.UserMapper;
 import org.example.model.User;
 import org.example.repositories.interfaces.UserRepository;
-import org.example.service.imlementations.UserServiceImpl;
+import org.example.service.implementations.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -66,16 +66,14 @@ class UserServiceTest {
     }
     @Test
     @DisplayName("успешное логгирование пользователя")
-    void loginUser_ValidUser_ReturnUserDTO() {
+    void loginUser_ValidUser_ReturnBoolean() {
         when(userRepository.getUsers()).thenReturn(List.of(user, user2));
-        when(userMapper.toUser(userRequestDTO)).thenReturn(user);
-        when(userMapper.toUser(userRequestDTO2)).thenReturn(user2);
 
-        boolean flag1 = userService.loginUser(userRequestDTO);
-        boolean flag2 = userService.loginUser(userRequestDTO2);
+        boolean flag1 = userService.loginUser("bezhenar_TO@mail.ru", "radditkafka");
+        boolean flag2 = userService.loginUser("kubanoid123@gmail.com", "javajava1233");
 
         Assertions.assertTrue(flag1);
-        Assertions.assertTrue(flag2);
+        Assertions.assertFalse(flag2);
         Mockito.verify(userRepository, Mockito.times(2)).getUsers();
     }
 

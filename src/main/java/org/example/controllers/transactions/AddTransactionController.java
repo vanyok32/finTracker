@@ -5,6 +5,7 @@ import lombok.Setter;
 import org.example.commands.AmountCategoryTypeParser;
 import org.example.controllers.ChoosingActionController;
 import org.example.dto.TransactionRequestDTO;
+import org.example.entrypoint.UserIdOwner;
 import org.example.enums.TransactionCategory;
 import org.example.enums.TransactionType;
 import org.example.in.Reader;
@@ -13,6 +14,7 @@ import org.example.out.AddTransactionWriter;
 import org.example.service.interfaces.TransactionService;
 import org.slf4j.LoggerFactory;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
@@ -46,9 +48,9 @@ public class AddTransactionController {
         String description = reader.read();
         TransactionRequestDTO dto = TransactionRequestDTO.builder()
                 .amount(amount).type(type).description(description).category(category)
-                .date(LocalDateTime.now()).build();
+                .date(LocalDate.now()).build();
         logger.info("Новая транзакция добавлена");
-        transactionService.addTransaction(dto);
+        transactionService.addTransaction(dto, UserIdOwner.getInstance().getUserID());
         choosingActionController.start();
     }
 }

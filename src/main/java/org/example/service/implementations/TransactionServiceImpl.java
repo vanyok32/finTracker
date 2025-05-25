@@ -1,10 +1,9 @@
-package org.example.service.imlementations;
+package org.example.service.implementations;
 
 import lombok.RequiredArgsConstructor;
 import org.example.dto.TransactionRequestDTO;
 import org.example.dto.TransactionResponseDTO;
 import org.example.mappers.TransactionMapper;
-import org.example.mappers.UserMapper;
 import org.example.model.Transaction;
 import org.example.repositories.implementations.TransactionRepositoryImpl;
 import org.example.repositories.interfaces.TransactionRepository;
@@ -16,18 +15,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-@RequiredArgsConstructor
-public class TransactionServiceImpl implements TransactionService {
-    private final TransactionRepository transactionRepository;
-    private final TransactionMapper transactionMapper;
 
-    private final Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
+public class TransactionServiceImpl implements TransactionService {
+    private final static TransactionRepository transactionRepository = TransactionRepositoryImpl.getInstance();
+    private final static TransactionMapper transactionMapper = TransactionMapper.getInstance();
+    private final static TransactionServiceImpl INSTANCE = new TransactionServiceImpl();
+    private final static Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
 
     @Override
-    public TransactionResponseDTO addTransaction(TransactionRequestDTO transactionRequestDTO) {
+    public TransactionResponseDTO addTransaction(TransactionRequestDTO transactionRequestDTO, UUID userID) {
         logger.debug("Добавление в TrService");
         Transaction transaction = transactionRepository.addTransaction
-                (transactionMapper.toTransaction(transactionRequestDTO));
+                (transactionMapper.toTransaction(transactionRequestDTO), userID);
         return transactionMapper.toResponseDTO(transaction);
 
     }
@@ -52,7 +51,7 @@ public class TransactionServiceImpl implements TransactionService {
         logger.debug("получение по id в TrService");
         Optional<Transaction> op = transactionRepository.getTransactionByTransactionID(id);
         if (op.isPresent()) return transactionMapper.toResponseDTO(op.get());
-        else return null;//todo продумать возврат
+        else return null;
     }
 
     @Override
@@ -65,4 +64,8 @@ public class TransactionServiceImpl implements TransactionService {
         }
         return trDTO;
     }
+    public static TransactionServiceImpl getInstance() {
+        return INSTANCE;
+    }
+    private TransactionServiceImpl() {}
 }

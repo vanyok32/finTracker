@@ -5,6 +5,7 @@ import org.example.enums.TransactionCategory;
 import org.example.enums.TransactionType;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class Transaction {
     private TransactionType type; //тип транзакции (доход/расход)
     private TransactionCategory category; //категория транзакции
-    private LocalDateTime date; //дата транзакции
+    private LocalDate date; //дата транзакции
     private String description; // описание
     private Double amount; //сумма транзакции
     private UUID UserID; //id владельца транзакции
@@ -27,7 +28,7 @@ public class Transaction {
                         String description) {
         this.type = type;
         this.category = category;
-        this.date = LocalDateTime.now();
+        this.date = LocalDate.now();
         this.description = description;
         this.amount = amount;
     }

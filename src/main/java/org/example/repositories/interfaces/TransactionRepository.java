@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface TransactionRepository {
 
-    public Transaction addTransaction(Transaction transaction);
+    public Transaction addTransaction(Transaction transaction, UUID userID);
     public boolean deleteTransaction(UUID id);
     public Optional<Transaction> getTransactionByTransactionID(UUID id);
     public List<Transaction> getTransactionsByUserID(UUID userID);

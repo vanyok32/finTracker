@@ -6,11 +6,12 @@ import org.example.enums.UserRole;
 import org.example.enums.UserStatus;
 import org.example.model.User;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
     UserResponseDTO registerUser(UserRequestDTO userRequestDTO);
-    boolean loginUser(UserRequestDTO userRequestDTO);
+    boolean loginUser(String pwd, String email);
     boolean deleteUser(UUID id);
     UserResponseDTO updateUser(UUID id, UserRequestDTO userRequestDTO);
     boolean hasUser(String email);
@@ -21,5 +22,6 @@ public interface UserService {
     boolean unblockUser(String email);
     UserStatus getUserStatus(String email);
     UserRole getUserRole(String email);
+    List<User> getAllUsers();
 
 }

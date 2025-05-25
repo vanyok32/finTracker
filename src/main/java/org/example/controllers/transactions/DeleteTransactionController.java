@@ -7,7 +7,6 @@ import org.example.entrypoint.UserIdOwner;
 import org.example.in.Reader;
 import org.example.out.TransactionListPrinter;
 import org.example.out.UpdateTransactionWriter;
-import org.example.service.imlementations.TransactionServiceImpl;
 import org.example.service.interfaces.TransactionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

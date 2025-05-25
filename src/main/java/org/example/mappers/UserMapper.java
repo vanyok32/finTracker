@@ -5,7 +5,7 @@ import org.example.dto.UserResponseDTO;
 import org.example.model.User;
 
 public class UserMapper {
-
+    private final static UserMapper INSTANCE = new UserMapper();
     // User -> dto
     public UserResponseDTO toResponseDTO(User user) {
         UserResponseDTO dto = new UserResponseDTO();
@@ -23,4 +23,8 @@ public class UserMapper {
         user.setPassword(dto.getPassword());
         return user;
     }
+    public static UserMapper getInstance() {
+        return INSTANCE;
+    }
+    private UserMapper() {}
 }

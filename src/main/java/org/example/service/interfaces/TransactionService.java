@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface TransactionService {
-    public TransactionResponseDTO addTransaction(TransactionRequestDTO transactionRequestDTO);
+    public TransactionResponseDTO addTransaction(TransactionRequestDTO transactionRequestDTO, UUID userID);
     public boolean deleteTransaction(UUID id);
     public TransactionResponseDTO updateTransaction(TransactionRequestDTO transactionRequestDTO, UUID id);
     public TransactionResponseDTO getTransactionByID(UUID id);

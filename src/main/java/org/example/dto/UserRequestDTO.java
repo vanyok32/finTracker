@@ -12,4 +12,5 @@ public class UserRequestDTO {
         this.email = email;
         this.password = password;
     }
+    public UserRequestDTO() {}
 }

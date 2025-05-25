@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.example.enums.TransactionCategory;
 import org.example.enums.TransactionType;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class TransactionResponseDTO {
     private double amount;
     private TransactionCategory category;
-    private LocalDateTime date;
+    private LocalDate date;
     private TransactionType type;
     private String description;
     private UUID TransactionID;

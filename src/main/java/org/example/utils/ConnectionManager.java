@@ -48,11 +48,13 @@ public final class ConnectionManager {
 
     private static Connection open() {
         try {
+            Class.forName("org.postgresql.Driver");
             return DriverManager.getConnection(
                 PropertiesUtil.get(URL_KEY),
                 PropertiesUtil.get(USERNAME_KEY),
                 PropertiesUtil.get(PASSWORD_KEY));
-        } catch (SQLException e) {
+
+        } catch (SQLException  | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }

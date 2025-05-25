@@ -5,6 +5,7 @@ import org.example.dto.TransactionResponseDTO;
 import org.example.model.Transaction;
 
 public class TransactionMapper {
+    private final static TransactionMapper INSTANCE = new TransactionMapper();
 
     //Транзакция -> dto
     public TransactionResponseDTO toResponseDTO(Transaction transaction) {
@@ -15,6 +16,7 @@ public class TransactionMapper {
         dto.setCategory(transaction.getCategory());
         dto.setAmount(transaction.getAmount());
         dto.setType(transaction.getType());
+        dto.setUserId(transaction.getUserID());
         return dto;
     }
 
@@ -26,6 +28,11 @@ public class TransactionMapper {
         tr.setCategory(dto.getCategory());
         tr.setAmount(dto.getAmount());
         tr.setType(dto.getType());
+        tr.setUserID(dto.getUserId());
         return tr;
     }
+    public static TransactionMapper getInstance() {
+        return INSTANCE;
+    }
+    private TransactionMapper() {}
 }

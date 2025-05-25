@@ -1,8 +1,8 @@
 package org.example.repositories.implementations;
 import org.example.enums.UserRole;
 import org.example.enums.UserStatus;
-import org.example.exeptions.TransactionRepositoryException;
-import org.example.exeptions.UserRepositoryException;
+import org.example.exceptions.TransactionRepositoryException;
+import org.example.exceptions.UserRepositoryException;
 import org.example.model.User;
 import org.example.repositories.interfaces.UserRepository;
 

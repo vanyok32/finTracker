@@ -3,23 +3,18 @@ package org.example.repositories.implementations;
 import org.example.entrypoint.UserIdOwner;
 import org.example.enums.TransactionCategory;
 import org.example.enums.TransactionType;
-import org.example.exeptions.TransactionRepositoryException;
+import org.example.exceptions.TransactionRepositoryException;
 import org.example.model.Transaction;
 import org.example.repositories.interfaces.TransactionRepository;
 import org.example.utils.ConnectionManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
+import java.util.*;
 
 
 public class TransactionRepositoryImpl implements TransactionRepository {
@@ -49,16 +44,16 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
 
     @Override
-    public Transaction addTransaction(Transaction transaction){
+    public Transaction addTransaction(Transaction transaction, UUID userID) {
         logger.debug("попытка добавления транзакции");
         try(var connection = ConnectionManager.get();
         var statement = connection.prepareStatement(ADD_SQL, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setObject(1,UserIdOwner.getInstance().getUserID());
+            statement.setObject(1,userID);
             statement.setDouble(2,transaction.getAmount());
             statement.setString(3,transaction.getType().toString());
             statement.setString(4,transaction.getCategory().toString());
             statement.setString(5,transaction.getDescription());
-            statement.setTimestamp(6, Timestamp.valueOf(transaction.getDate()));
+            statement.setDate(6, Date.valueOf(transaction.getDate()));
             statement.executeUpdate();
             ResultSet generatedKeys = statement.getGeneratedKeys();
             if (generatedKeys.next()) {
@@ -126,7 +121,8 @@ public class TransactionRepositoryImpl implements TransactionRepository {
             statement.setString(2, transaction.getType().toString());
             statement.setString(3, transaction.getCategory().toString());
             statement.setString(4, transaction.getDescription());
-            statement.setTimestamp(5, Timestamp.valueOf(transaction.getDate()));
+            statement.setDate(5, Date.valueOf(transaction.getDate()));
+            statement.setObject(6, transaction.getTransactionID());
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
             throw new TransactionRepositoryException(e);
@@ -138,7 +134,7 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     private static Transaction build(ResultSet rs) throws SQLException {
         return new Transaction(TransactionType.valueOf(rs.getString("type")),
                 TransactionCategory.valueOf(rs.getString("category")),
-                rs.getTimestamp("created_at").toLocalDateTime(),
+                rs.getDate("created_at").toLocalDate(),
                 rs.getString("description"),
                 rs.getDouble("amount"),
                 UUID.fromString(rs.getString("user_id")), UUID.fromString(rs.getString("id")));

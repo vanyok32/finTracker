@@ -2,12 +2,13 @@ package ServiceTest;
 
 import org.example.dto.TransactionRequestDTO;
 import org.example.dto.TransactionResponseDTO;
+import org.example.entrypoint.UserIdOwner;
 import org.example.enums.TransactionCategory;
 import org.example.enums.TransactionType;
 import org.example.mappers.TransactionMapper;
 import org.example.model.Transaction;
 import org.example.repositories.interfaces.TransactionRepository;
-import org.example.service.imlementations.TransactionServiceImpl;
+import org.example.service.implementations.TransactionServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +42,7 @@ class TransactionServiceTest {
     private TransactionMapper transactionMapper;
     @InjectMocks
     private TransactionServiceImpl transactionService;
+    private UUID userID;
 
     @BeforeEach
     void setUp() {
@@ -58,7 +61,8 @@ class TransactionServiceTest {
                 transaction2.getDate(), transaction2.getType(), transaction2.getDescription(), transaction2.getTransactionID(),
                 transaction2.getUserID());
         transactionRequestDTO = TransactionRequestDTO.builder().amount(2800.00).type(TransactionType.MINUS)
-                .date(LocalDateTime.now()).description("купил абонемент в ddx").build();
+                .date(LocalDate.now()).description("купил абонемент в ddx").build();
+        userID = UUID.randomUUID();
     }
 
     @Test
@@ -71,16 +75,16 @@ class TransactionServiceTest {
          * Assert - проверка результата теста
          **/
         //arrange
-        when(transactionRepository.addTransaction(transaction)).thenReturn(transaction);
+        when(transactionRepository.addTransaction(transaction, userID)).thenReturn(transaction);
         when(transactionMapper.toResponseDTO(transaction)).thenReturn(transactionResponseDTO);
         when(transactionMapper.toTransaction(transactionRequestDTO)).thenReturn(transaction);
         //act
-        TransactionResponseDTO actual_responceDTO = transactionService.addTransaction(transactionRequestDTO);
+        TransactionResponseDTO actual_responceDTO = transactionService.addTransaction(transactionRequestDTO, userID);
         //assert
         Assertions.assertNotNull(actual_responceDTO);
         Assertions.assertEquals(transactionResponseDTO.getAmount(), actual_responceDTO.getAmount());
         Assertions.assertEquals(transactionResponseDTO.getCategory(), actual_responceDTO.getCategory());
-        Mockito.verify(transactionRepository, Mockito.times(1)).addTransaction(transaction);
+        Mockito.verify(transactionRepository, Mockito.times(1)).addTransaction(transaction, userID);
     }
 
     @Test
