@@ -21,18 +21,12 @@ public class RegistrationServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
-        String pathInfo = req.getPathInfo();
-        System.out.println(pathInfo);
-        try{
-            UserRequestDTO dto = objectMapper.readValue(req.getReader(), UserRequestDTO.class);
-            if (userService.hasUser(dto.getEmail())) {
-                objectMapper.writeValue(resp.getWriter(), userService.getUserByEmail(dto.getEmail()));
-                return;
-            }
-            UserResponseDTO responseDTO = userService.registerUser(dto);
-            objectMapper.writeValue(resp.getWriter(), responseDTO);
-        } catch (IllegalArgumentException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid name");
+        UserRequestDTO dto = objectMapper.readValue(req.getReader(), UserRequestDTO.class);
+        if (userService.hasUser(dto.getEmail())) {
+            objectMapper.writeValue(resp.getWriter(), userService.getUserByEmail(dto.getEmail()));
+            return;
         }
+        UserResponseDTO responseDTO = userService.registerUser(dto);
+        objectMapper.writeValue(resp.getWriter(), responseDTO);
     }
 }

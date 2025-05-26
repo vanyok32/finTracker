@@ -165,7 +165,7 @@ public class UserRepositoryImpl implements UserRepository {
             statement.setString(1,email);
             return statement.executeUpdate() == 1;
         } catch (SQLException e) {
-            throw new TransactionRepositoryException(e);
+            throw new UserRepositoryException(e);
         }
     }
     @Override

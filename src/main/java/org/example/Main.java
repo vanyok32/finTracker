@@ -93,6 +93,7 @@ public class Main {
         blockUserController.setChoosingActionController(choosingActionController);
         unblockUserController.setChoosingActionController(choosingActionController);
         identification.start();
+        //System.out.println(UserService.getUserByEmail("ivmerzlyakov@mail.ru"));
 
 
 

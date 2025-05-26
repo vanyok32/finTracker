@@ -1,5 +1,6 @@
 package org.example.service.implementations;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.dto.UserRequestDTO;
 import org.example.dto.UserResponseDTO;
 import org.example.enums.UserRole;
@@ -48,7 +49,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(UUID id) {
         logger.debug("удаление в UserService");
-        return userRepository.removeUser(id);
+        if (!userRepository.removeUser(id)){
+            throw new UserNotFoundException(id.toString());
+        }
+        return true;
     }
 
     @Override
@@ -60,13 +64,18 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.toUser(userRequestDTO);
         user.setUserID(id);
-        userRepository.updateUser(user, id);
+        if (!userRepository.updateUser(user, id)){
+            throw new UserNotFoundException("User not found");
+        }
         return userMapper.toResponseDTO(user);
     }
 
     @Override
     public boolean hasUser(String email) {
-        return userRepository.getUserByEmail(email).isPresent();
+        if (!userRepository.getUserByEmail(email).isPresent()) {
+            throw new UserNotFoundException("User not found");
+        }
+        return true;
     }
 
     @Override
@@ -83,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String getUserPassword(String email) {
-        User user = userRepository.getUserByEmail(email).get();
+        User user = userRepository.getUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
         return user.getPassword();
     }
 
@@ -99,11 +108,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserStatus getUserStatus(String email) {
+        if (userRepository.getUserStatus(email) == null) throw new UserNotFoundException(email);
         return userRepository.getUserStatus(email);
     }
 
     @Override
     public UserRole getUserRole(String email) {
+        if (userRepository.getUserRole(email) == null) throw new UserNotFoundException(email);
         return userRepository.getUserRole(email);
     }
 

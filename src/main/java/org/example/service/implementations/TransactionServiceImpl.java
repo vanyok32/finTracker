@@ -3,6 +3,7 @@ package org.example.service.implementations;
 import lombok.RequiredArgsConstructor;
 import org.example.dto.TransactionRequestDTO;
 import org.example.dto.TransactionResponseDTO;
+import org.example.exceptions.TransactionNotFoundException;
 import org.example.mappers.TransactionMapper;
 import org.example.model.Transaction;
 import org.example.repositories.implementations.TransactionRepositoryImpl;
@@ -34,7 +35,8 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public boolean deleteTransaction(UUID id) {
         logger.debug("Удаление в TrService");
-        return transactionRepository.deleteTransaction(id);
+        if (!transactionRepository.deleteTransaction(id)) throw new TransactionNotFoundException(id.toString());
+        return true;
     }
 
     @Override
@@ -42,16 +44,15 @@ public class TransactionServiceImpl implements TransactionService {
         logger.debug("Обновление в TrService");
         Transaction tr = transactionMapper.toTransaction(transactionRequestDTO);
         tr.setTransactionID(id);
-        transactionRepository.updateTransaction(tr, id);
+        if (!transactionRepository.updateTransaction(tr, id)) throw new TransactionNotFoundException(id.toString());
         return transactionMapper.toResponseDTO(tr);
     }
 
     @Override
     public TransactionResponseDTO getTransactionByID(UUID id) {
         logger.debug("получение по id в TrService");
-        Optional<Transaction> op = transactionRepository.getTransactionByTransactionID(id);
-        if (op.isPresent()) return transactionMapper.toResponseDTO(op.get());
-        else return null;
+        return transactionMapper.toResponseDTO(transactionRepository.getTransactionByTransactionID(id).orElseThrow(()
+                -> new TransactionNotFoundException(id.toString())));
     }
 
     @Override
@@ -62,6 +63,7 @@ public class TransactionServiceImpl implements TransactionService {
         for (Transaction transaction : tr) {
             trDTO.add(transactionMapper.toResponseDTO(transaction));
         }
+        if (trDTO.isEmpty()) throw new TransactionNotFoundException(userId.toString());
         return trDTO;
     }
     public static TransactionServiceImpl getInstance() {

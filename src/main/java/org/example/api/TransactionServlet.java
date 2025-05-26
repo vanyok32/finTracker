@@ -27,96 +27,70 @@ public class TransactionServlet extends HttpServlet {
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
     private final TransactionService transactionService = TransactionServiceImpl.getInstance();
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         String pathInfo = req.getPathInfo();
-        try {
-            if (pathInfo == null || pathInfo.equals("/")) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid url");
-                return;
-            }
-            String[] parts = pathInfo.split("/");
-            if (parts.length == 2) {
-                UUID id = UUID.fromString(parts[1]);
-                TransactionResponseDTO trDTO = transactionService.getTransactionByID(id);
-                if (trDTO != null) {
-                    objectMapper.writeValue(resp.getWriter(), trDTO);
-                } else {
-                    resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Transaction not found");
-                }
-            } else if (parts.length == 3 && parts[1].equals("user")) {
-                UUID id = UUID.fromString(parts[2]);
-                objectMapper.writeValue(resp.getWriter(), transactionService.getTransactionsByUserId(id));
-            }
-        } catch (IllegalArgumentException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid ID");
+        if (pathInfo == null || pathInfo.equals("/")) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid url");
+            return;
         }
+        String[] parts = pathInfo.split("/");
+        if (parts.length == 2) {
+            UUID id = UUID.fromString(parts[1]);
+            TransactionResponseDTO trDTO = transactionService.getTransactionByID(id);
+            if (trDTO != null) {
+                objectMapper.writeValue(resp.getWriter(), trDTO);
+            } else {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Transaction not found");
+            }
+        } else if (parts.length == 3 && parts[1].equals("user")) {
+            UUID id = UUID.fromString(parts[2]);
+            objectMapper.writeValue(resp.getWriter(), transactionService.getTransactionsByUserId(id));
+        }
+
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String pathInfo = req.getPathInfo();
-        try {
-            String[] parts = pathInfo.split("/");
-            if (parts.length != 2) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid url");
-                return;
-            }
-            UUID id = UUID.fromString(parts[1]);
-            if (!transactionService.deleteTransaction(id)) {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "User not found");
-            }
-        } catch (IllegalArgumentException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid UUID");
+        String[] parts = pathInfo.split("/");
+        if (parts.length != 2) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid url");
+            return;
         }
+        transactionService.deleteTransaction(UUID.fromString(parts[1]));
     }
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         String pathInfo = req.getPathInfo();
-        try {
-            if (pathInfo == null || pathInfo.equals("/")) {
-                TransactionRequestDTO requestDTO = objectMapper.readValue(req.getReader(), TransactionRequestDTO.class);
-                TransactionResponseDTO respDTO = transactionService.addTransaction(requestDTO, requestDTO.getUserId());
-                objectMapper.writeValue(resp.getWriter(), respDTO);
-            } else {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid url");
-            }
-        } catch (IllegalArgumentException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
+        if (pathInfo == null || pathInfo.equals("/")) {
+            TransactionRequestDTO requestDTO = objectMapper.readValue(req.getReader(), TransactionRequestDTO.class);
+            TransactionResponseDTO respDTO = transactionService.addTransaction(requestDTO, requestDTO.getUserId());
+            objectMapper.writeValue(resp.getWriter(), respDTO);
+        } else {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid url");
         }
     }
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         String pathInfo = req.getPathInfo();
-        try {
-            String[] parts = pathInfo.split("/");
-            if (parts.length != 2) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid url");
-                return;
-            }
-            UUID id = UUID.fromString(parts[1]);
-            TransactionRequestDTO requestDTO = objectMapper.readValue(req.getReader(), TransactionRequestDTO.class);
-            TransactionResponseDTO respDTO = transactionService.updateTransaction(requestDTO, id);
-            objectMapper.writeValue(resp.getWriter(), respDTO);
-
-        } catch (IllegalArgumentException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
+        String[] parts = pathInfo.split("/");
+        if (parts.length != 2) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid url");
+            return;
         }
+        TransactionRequestDTO requestDTO = objectMapper.readValue(req.getReader(), TransactionRequestDTO.class);
+        TransactionResponseDTO respDTO = transactionService.updateTransaction(requestDTO, UUID.fromString(parts[1]));
+        objectMapper.writeValue(resp.getWriter(), respDTO);
     }
-
     @Override
     public void init() throws ServletException {
         System.out.println("TransactionServlet init");
     }
-
     @Override
     public void destroy() {
-
     }
 }
